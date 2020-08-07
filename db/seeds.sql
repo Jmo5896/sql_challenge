@@ -4,9 +4,9 @@ insert into department (name) values
 ('Retail');
 
 insert into role (title, salary, department_id) values
-	('Manager',80000,1),
-    ('Manager',80000,2),
-    ('Manager',80000,3),
+	('Sales Manager',80000,1),
+    ('Engineering Manager',80000,2),
+    ('Retail Manager',80000,3),
     ('Salesman',40000,1),
 	('Engineer',60000,2),
     ('Cashier',20000,3);

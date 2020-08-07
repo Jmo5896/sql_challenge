@@ -1,65 +1,72 @@
-const connection = require('./connect');
 const inquirer = require('inquirer');
 
-function init() {
-    inquirer.prompt([
-        {
-            type:'list',
-            name:'choice',
-            choices: ['view', 'add', 'update', 'delete', 'quit'],
-            message:'What would you like to do?'
-        }
-    ]).then(({ choice }) => choice==='quit'? false: selectDb(choice));
-}
+const connection = require('./connect');
+const add = require('./add');
+const init = require('./init');
+const orm = require('./orm');
+// const crud = require('./crud');
 
-function selectDb(choice){
-    switch(choice) {
-        case 'view':
-            viewQ();
-        break;
-        case 'add':
-            addQ();
-        break;
-        case 'update':
-            updateQ();
-        break;
-        case 'delete':
-            deleteQ();
-        break;
-    }
-}
 
-function q1 (choice) {
+function q1(choice) {
     return inquirer.prompt([
         {
-            type:'list',
-            name:'choice',
-            choices: ['employee','department','role'],
-            message:`Which db would you like to ${choice}?`
+            type: 'list',
+            name: 'choice',
+            choices: ['employee', 'department', 'role'],
+            message: `Which db would you like to ${choice}?`
         }
     ])
 }
 
-function viewQ() {
-    q1('view').then(({ choice }) => {
-        
-    });
+const crud = {
+    viewQ: () => {
+        q1('view').then(({ choice }) => {
+            orm.view(choice, function (result) {
+                console.table(result);
+                init(crud);
+            });
+        });
+    },
+
+    addQ: () => {
+        q1('add to').then(({ choice }) => {
+            switch (choice) {
+                case 'employee':
+                    add.emp(result => {
+                        console.table(result);
+                        init(crud);
+                    });
+                    break;
+                case 'department':
+                    add.dept(result => {
+                        console.table(result);
+                        init(crud);
+                    });
+                    break;
+                case 'role':
+                    add.role(result => {
+                        console.table(result);
+                        init(crud);
+                    });
+                    break;
+            }
+        });
+    },
+
+    updateQ: () => {
+        q1('make an update to').then(({ choice }) => {
+
+        });
+    },
+
+    deleteQ: () => {
+        q1('delete from').then(({ choice }) => {
+
+        });
+    }
 }
 
-function addQ() {
-    q1('add to').then(({ choice }) => {
-        
-    });
-}
 
-function vupdateQiewQ() {
-    q1('make an update to').then(({ choice }) => {
-        
-    });
-}
 
-function deleteQ() {
-    q1('delete from').then(({ choice }) => {
-        
-    });
-}
+
+init(crud);
